@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Will you be my Valentine?</title>
 
+
   <!-- Confetti library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
 
   <style>
     :root {
@@ -17,7 +19,9 @@
       --yesHover: #c525fa;
     }
 
+
     * { box-sizing: border-box; }
+
 
     body {
       margin: 0;
@@ -30,6 +34,7 @@
       padding: 16px;
     }
 
+
     /* FULL-SCREEN CONFETTI CANVAS */
     #confettiCanvas {
       position: fixed;
@@ -40,6 +45,7 @@
       z-index: 9999;
     }
 
+
     .card {
       width: min(720px, 92vw);
       padding: 26px 22px;
@@ -49,6 +55,7 @@
       text-align: center;
       box-shadow: 0 18px 60px rgba(0,0,0,.15);
     }
+
 
     /* CHANGED: art image styling (size, radius, etc.) */
     .art {
@@ -61,10 +68,12 @@
       filter: drop-shadow(0 10px 14px rgba(0,0,0,.12));
     }
 
+
     h1 {
       font-size: clamp(26px, 4vw, 44px);
       margin: 16px 0 12px;
     }
+
 
     .button-zone {
       position: relative;
@@ -74,11 +83,11 @@
       touch-action: none;
     }
 
+
     /* CHANGED: nicer button hover/active feel */
     button {
       position: absolute;
       top: 50%;
-      transform: translateY(-50%);
       padding: 16px 28px;
       font-size: 18px;
       font-weight: 800;
@@ -91,10 +100,12 @@
       transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
     }
 
+
     button:active {
       transform: translateY(-48%) scale(0.97);
       box-shadow: 0 6px 18px rgba(0,0,0,.22);
     }
+
 
     /* CHANGED: Yes button hover glow */
     #yesBtn {
@@ -103,12 +114,13 @@
       color: #fff;
       box-shadow: 0 10px 24px rgba(0,0,0,.14);
     }
-
+    
     #yesBtn:hover {
       transform: translateY(-50%) scale(1.08);
       box-shadow: 0 12px 30px rgba(187, 36, 241, .6);
       background: var(--yesHover);
     }
+
 
     #noBtn {
       left: 62%;
@@ -116,11 +128,13 @@
       color: #111827;
     }
 
+
     .hint {
       margin-top: 14px;
       font-size: 13px;
       opacity: .8;
     }
+
 
     .result {
       display: none;
@@ -128,10 +142,12 @@
       animation: pop .35s ease;
     }
 
+
     .result h2 {
       font-size: clamp(30px, 4.5vw, 46px);
       margin: 10px 0;
     }
+
 
     .fireworks {
       width: min(380px, 90vw);
@@ -139,10 +155,12 @@
       display: block;
     }
 
+
     @keyframes pop {
       from { transform: scale(.96); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
+
 
     /* NEW: No button shake animation */
     @keyframes shake {
@@ -151,15 +169,18 @@
       75% { transform: translateY(-50%) translateX(3px); }
     }
 
+
     #noBtn.shake {
       animation: shake 0.25s;
     }
+
 
     /* Optional: small-screen tweak */
     @media (max-width: 480px) {
       .card {
         padding: 20px 16px;
       }
+
 
       h1 {
         font-size: clamp(22px, 5vw, 34px);
@@ -168,8 +189,10 @@
   </style>
 </head>
 
+
 <body>
   <canvas id="confettiCanvas"></canvas>
+
 
   <main class="card">
     <!-- OUR PICTURE (UNCHANGED STRUCTURE, uses .art styles) -->
@@ -179,8 +202,10 @@
       alt="Cute proposal image"
     />
 
+
     <!-- CHANGED: we will update this text after Yes in JS -->
-    <h1>Alexandra will you be my valentine?</h1>
+    <h1>Alexandra, will you be my valentine?</h1>
+
 
     <section class="button-zone" id="zone">
       <!-- CHANGED: aria-labels added -->
@@ -188,8 +213,10 @@
       <button id="noBtn" aria-label="No, I will not be your Valentine">No</button>
     </section>
 
+
     <!-- HINT (first message; will change in JS) -->
     <div class="hint" id="hint">Surely you can't say no...</div>
+
 
     <section class="result" id="result">
       <h2>YAY! 🎉</h2>
@@ -201,135 +228,116 @@
     </section>
   </main>
 
-  <script>
-    const zone = document.getElementById("zone");
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
-    const result = document.getElementById("result");
-    const hint = document.getElementById("hint");
-    const title = document.querySelector("h1");
 
-    /* NEW: messages that rotate when No runs away */
-    const messages = [
-      "Surely you can't say no...",
-      "Think about it carefully 👀",
-      "Are you suuure about that?",
-      "Last chance to say yes! 💜"
-    ];
-    let msgIndex = 0;
+<script>
+  const zone = document.getElementById("zone");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const result = document.getElementById("result");
+  const hint = document.getElementById("hint");
+  const title = document.querySelector("h1");
 
-    function updateHint() {
-      msgIndex = (msgIndex + 1) % messages.length;
-      hint.textContent = messages[msgIndex];
-    }
+  /* messages for the hint */
+  const messages = [
+    "Surely you can't say no...",
+    "Think about it carefully 👀",
+    "Are you suuure about that?",
+    "Last chance to say yes! 💜"
+  ];
+  let msgIndex = 0;
 
-    /* ---------- CONFETTI ---------- */
-    const confettiCanvas = document.getElementById("confettiCanvas");
+  function updateHint() {
+    msgIndex = (msgIndex + 1) % messages.length;
+    hint.textContent = messages[msgIndex];
+  }
 
-    function resizeConfettiCanvas() {
-      const dpr = Math.max(1, window.devicePixelRatio || 1);
-      confettiCanvas.width = Math.floor(window.innerWidth * dpr);
-      confettiCanvas.height = Math.floor(window.innerHeight * dpr);
-      confettiCanvas.style.width = "100vw";
-      confettiCanvas.style.height = "100vh";
-    }
+  /* ---------- CONFETTI ---------- */
+  const confettiCanvas = document.getElementById("confettiCanvas");
 
+  function resizeConfettiCanvas() {
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    confettiCanvas.width = Math.floor(window.innerWidth * dpr);
+    confettiCanvas.height = Math.floor(window.innerHeight * dpr);
+    confettiCanvas.style.width = "100vw";
+    confettiCanvas.style.height = "100vh";
+  }
+
+  resizeConfettiCanvas();
+  window.addEventListener("resize", resizeConfettiCanvas);
+  window.addEventListener("orientationchange", () => setTimeout(resizeConfettiCanvas, 150));
+
+  const confettiInstance = confetti.create(confettiCanvas, {
+    resize: false,
+    useWorker: true
+  });
+
+  function fullScreenConfetti() {
+    const end = Date.now() + 1600;
+
+    (function frame() {
+      confettiInstance({
+        particleCount: 12,
+        spread: 90,
+        startVelocity: 45,
+        ticks: 180,
+        origin: { x: Math.random(), y: Math.random() * 0.3 }
+      });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    })();
+
+    setTimeout(() => {
+      confettiInstance({
+        particleCount: 300,
+        spread: 140,
+        startVelocity: 60,
+        ticks: 220,
+        origin: { x: 0.5, y: 0.55 }
+      });
+    }, 300);
+  }
+
+  /* ---------- YES / NO SCALE ---------- */
+  let yesScale = 1;
+  let noScale = 1;
+
+  function applyScales() {
+    yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
+    noBtn.style.transform  = `translateY(-50%) scale(${noScale})`;
+  }
+
+  function growYes() {
+    yesScale = Math.min(2.4, yesScale + 0.15);
+    applyScales();
+  }
+
+  function shrinkNo() {
+    noScale = Math.max(0.5, noScale - 0.1);
+    applyScales();
+  }
+
+  /* ---------- NO CLICK: SHRINK NO, GROW YES, SHAKE ---------- */
+  noBtn.addEventListener("click", e => {
+    e.preventDefault();
+    shrinkNo();
+    growYes();
+    updateHint();
+    
+    // Shake on click
+    noBtn.classList.add("shake");
+    setTimeout(() => noBtn.classList.remove("shake"), 250);
+  });
+
+  /* ---------- YES CLICK ---------- */
+  yesBtn.addEventListener("click", () => {
+    zone.style.display = "none";
+    hint.style.display = "none";
+    result.style.display = "block";
+    title.textContent = "Best. Decision. Ever. 💜";
     resizeConfettiCanvas();
-    window.addEventListener("resize", resizeConfettiCanvas);
-    window.addEventListener("orientationchange", () => setTimeout(resizeConfettiCanvas, 150));
+    fullScreenConfetti();
+  });
+</script>
 
-    const confettiInstance = confetti.create(confettiCanvas, {
-      resize: false,
-      useWorker: true
-    });
 
-    function fullScreenConfetti() {
-      const end = Date.now() + 1600;
-
-      (function frame() {
-        confettiInstance({
-          particleCount: 12,
-          spread: 90,
-          startVelocity: 45,
-          ticks: 180,
-          origin: { x: Math.random(), y: Math.random() * 0.3 }
-        });
-        if (Date.now() < end) requestAnimationFrame(frame);
-      })();
-
-      setTimeout(() => {
-        confettiInstance({
-          particleCount: 300,
-          spread: 140,
-          startVelocity: 60,
-          ticks: 220,
-          origin: { x: 0.5, y: 0.55 }
-        });
-      }, 300);
-    }
-
-    /* ---------- YES BUTTON GROWS ---------- */
-    let yesScale = 1;
-    function growYes() {
-      yesScale = Math.min(2.2, yesScale + 0.1);
-      yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
-    }
-
-    /* ---------- NO BUTTON RUNS AWAY ---------- */
-    function clamp(n, min, max) {
-      return Math.max(min, Math.min(max, n));
-    }
-
-    function moveNo(px, py) {
-      const z = zone.getBoundingClientRect();
-      const b = noBtn.getBoundingClientRect();
-
-      let dx = (b.left + b.width / 2) - px;
-      let dy = (b.top + b.height / 2) - py;
-      let mag = Math.hypot(dx, dy) || 1;
-      dx /= mag;
-      dy /= mag;
-
-      let newLeft = (b.left - z.left) + dx * 150;
-      let newTop  = (b.top - z.top) + dy * 150;
-
-      newLeft = clamp(newLeft, 0, z.width - b.width);
-      newTop  = clamp(newTop, 0, z.height - b.height);
-
-      noBtn.style.left = newLeft + "px";
-      noBtn.style.top = newTop + "px";
-      noBtn.style.transform = "none";
-
-      growYes();
-      updateHint(); // NEW: rotate hint text each time No moves
-    }
-
-    zone.addEventListener("pointermove", e => {
-      const b = noBtn.getBoundingClientRect();
-      const d = Math.hypot(
-        (b.left + b.width / 2) - e.clientX,
-        (b.top + b.height / 2) - e.clientY
-      );
-      if (d < 140) {
-        moveNo(e.clientX, e.clientY);
-
-        // NEW: brief shake effect
-        noBtn.classList.add("shake");
-        setTimeout(() => noBtn.classList.remove("shake"), 250);
-      }
-    });
-
-    noBtn.addEventListener("click", e => e.preventDefault());
-
-    /* ---------- YES CLICK ---------- */
-    yesBtn.addEventListener("click", () => {
-      zone.style.display = "none";
-      hint.style.display = "none";
-      result.style.display = "block";
-      title.textContent = "Best. Decision. Ever. 💜"; // NEW: change heading after Yes
-      resizeConfettiCanvas();
-      fullScreenConfetti();
-    });
-  </script>
 </body>
 </html>
