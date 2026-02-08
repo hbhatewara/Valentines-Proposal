@@ -149,11 +149,13 @@
     }
 
 
-    .fireworks {
-      width: min(380px, 90vw);
-      margin: 0 auto;
-      display: block;
-    }
+.fireworks {
+  width: min(240px, 65vw);   /* smaller max width for phones */
+  max-height: 240px;         /* cap the height */
+  margin: 0 auto;
+  display: block;
+  object-fit: contain;       /* keeps proportions perfect */
+}
 
 
     @keyframes pop {
