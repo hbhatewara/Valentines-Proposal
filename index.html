@@ -51,19 +51,21 @@
     }
 
     .art {
-  width: min(180px, 60vw); /* try 150–200px until it feels right */
+  width: min(200px, 60vw);
   height: auto;
-  margin: 0 auto 10px;
+  margin: 0 auto 16px;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 16px;       /* soft corners like a photo */
   filter: drop-shadow(0 10px 14px rgba(0,0,0,.12));
 }
 
 
+
     h1 {
-      font-size: clamp(26px, 4vw, 44px);
-      margin: 12px 0 18px;
-    }
+  font-size: clamp(26px, 4vw, 44px);
+  margin: 16px 0 12px;
+}
 
     .button-zone {
       position: relative;
@@ -74,20 +76,26 @@
     }
 
     button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      padding: 16px 24px;
-      font-size: 18px;
-      font-weight: 800;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 10px 24px rgba(0,0,0,.14);
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .12s ease, background .12s ease;
-    }
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 16px 28px;
+  font-size: 18px;
+  font-weight: 800;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0,0,0,.14);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+}
+
+button:active {
+  transform: translateY(-48%) scale(0.97);
+  box-shadow: 0 6px 18px rgba(0,0,0,.22);
+}
+
 
     #yesBtn {
       left: 18%;
@@ -103,10 +111,10 @@
     }
 
     .hint {
-      margin-top: 10px;
-      font-size: 13px;
-      opacity: .7;
-    }
+  margin-top: 14px;
+  font-size: 13px;
+  opacity: .8;
+}
 
     .result {
       display: none;
@@ -145,7 +153,7 @@
 
 
 
-    <h1>Alexandra will you be my valentine?</h1>
+    <h1>Alexandra, will you be my valentine?</h1>
 
     <section class="button-zone" id="zone">
       <button id="yesBtn">Yes</button>
